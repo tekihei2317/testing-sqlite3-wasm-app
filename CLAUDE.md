@@ -32,9 +32,10 @@ Core task management functionality:
 ### Testing Approach
 
 - Tests backend database operations directly
-- No mocking of database layer
-- Real database connections used in tests
+- Uses mock implementation for Node.js/test environment compatibility
+- Real sqlite3Worker1Promiser used in browser environment
 - Example test pattern focuses on verifying actual database state changes
+- MockSQLiteWorkerAPI provides in-memory database simulation for testing
 
 ## Development Commands
 
