@@ -23,7 +23,7 @@ export async function getTasks(): Promise<Task[]> {
   const result = await dbClient({
     type: "exec",
     args: {
-      sql: "SELECT * FROM tasks ORDER BY created_at DESC",
+      sql: "SELECT * FROM tasks ORDER BY id DESC",
       returnValue: "resultRows",
       rowMode: "object",
     },
@@ -38,12 +38,13 @@ export async function deleteTask(id: number): Promise<boolean> {
   const result = await dbClient({
     type: "exec",
     args: {
-      sql: "DELETE FROM tasks WHERE id = ?",
+      sql: "DELETE FROM tasks WHERE id = ? RETURNING id",
       bind: [id],
+      returnValue: "resultRows",
     },
   });
 
-  return result.changes > 0;
+  return result.result.resultRows.length > 0;
 }
 
 export async function toggleTask(id: number): Promise<Task | null> {

@@ -8,5 +8,5 @@ afterEach(async () => {
 
 // Reset database state before each test
 beforeEach(async () => {
-  // Database will be re-initialized on first use
+  // Database will be re-initialized with in-memory database for each test
 });

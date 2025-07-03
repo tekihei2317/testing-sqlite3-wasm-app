@@ -26,7 +26,7 @@ describe("Task Management", () => {
 
       expect(task).toBeDefined();
       expect(task.name).toBe("Test Task");
-      expect(task.completed).toBe(false);
+      expect(task.completed).toBe(0); // SQLite returns 0 for false
       expect(task.id).toBeDefined();
       expect(task.created_at).toBeDefined();
     });
@@ -54,6 +54,7 @@ describe("Task Management", () => {
 
       const tasks = await getTasks();
       expect(tasks).toHaveLength(2);
+
       expect(tasks[0].name).toBe("Second Task"); // Most recent first
       expect(tasks[1].name).toBe("First Task");
     });
@@ -67,7 +68,7 @@ describe("Task Management", () => {
       expect(deleted).toBe(true);
 
       const tasks = await getTasks();
-      expect(tasks.find(t => t.id === task.id)).toBeUndefined();
+      expect(tasks.find((t) => t.id === task.id)).toBeUndefined();
     });
 
     test("should return false for non-existent task", async () => {
@@ -79,13 +80,13 @@ describe("Task Management", () => {
   describe("toggleTask", () => {
     test("should toggle task completion status", async () => {
       const task = await addTask({ name: "Task to Toggle" });
-      expect(task.completed).toBe(false);
+      expect(task.completed).toBe(0); // SQLite returns 0 for false
 
       const toggledTask = await toggleTask(task.id);
-      expect(toggledTask?.completed).toBe(true);
+      expect(toggledTask?.completed).toBe(1); // SQLite returns 1 for true
 
       const toggledAgain = await toggleTask(task.id);
-      expect(toggledAgain?.completed).toBe(false);
+      expect(toggledAgain?.completed).toBe(0); // SQLite returns 0 for false
     });
 
     test("should return null for non-existent task", async () => {

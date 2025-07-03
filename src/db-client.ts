@@ -1,5 +1,4 @@
 import { SQLiteWorkerAPI } from "./types";
-import { createMockSQLiteWorkerAPI } from "./db-client-mock";
 
 let dbClient: SQLiteWorkerAPI | null = null;
 
@@ -8,34 +7,32 @@ export async function initializeDatabase(): Promise<SQLiteWorkerAPI> {
     return dbClient;
   }
 
-  // Use mock implementation only for test environment
-  if (process.env.NODE_ENV === "test") {
-    dbClient = createMockSQLiteWorkerAPI();
-  } else {
-    // Initialize sqlite3Worker1Promiser for browser environment
-    const { sqlite3Worker1Promiser } = await import("@sqlite.org/sqlite-wasm");
+  // Initialize sqlite3Worker1Promiser for all environments
+  const { sqlite3Worker1Promiser } = await import("@sqlite.org/sqlite-wasm");
 
-    // Create database client using wrapped worker pattern
-    const promiser = await new Promise<SQLiteWorkerAPI>((resolve) => {
-      const _promiser = sqlite3Worker1Promiser({
-        onready: () => {
-          console.log("SQLite database initialized successfully");
-          resolve(_promiser);
-        },
-        onerror: (error: any) => {
-          console.error("SQLite initialization error:", error);
-        },
-      });
+  // Create database client using wrapped worker pattern
+  const promiser = await new Promise<SQLiteWorkerAPI>((resolve) => {
+    const _promiser = sqlite3Worker1Promiser({
+      onready: () => {
+        console.log("SQLite database initialized successfully");
+        resolve(_promiser);
+      },
+      onerror: (error: any) => {
+        console.error("SQLite initialization error:", error);
+      },
     });
+  });
 
-    dbClient = promiser;
-  }
+  dbClient = promiser;
 
-  // Open database
+  // Open database (use in-memory for tests, OPFS for production)
+  const filename =
+    process.env.NODE_ENV === "test" ? ":memory:" : "file:test.db?vfs=opfs";
+
   await dbClient({
     type: "open",
     args: {
-      filename: "file:test.db?vfs=opfs",
+      filename,
     },
   });
 

@@ -67,10 +67,10 @@ export function useTasks() {
     [loadTasks]
   );
 
-
   useEffect(() => {
+    console.log("loading...");
     loadTasks();
-  }, [loadTasks]);
+  }, []);
 
   const completedCount = tasks.filter((task) => task.completed).length;
   const pendingCount = totalCount - completedCount;
