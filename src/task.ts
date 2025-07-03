@@ -4,10 +4,13 @@ import { Task, CreateTaskInput, UpdateTaskInput } from './types';
 export async function addTask(input: CreateTaskInput): Promise<Task> {
   const dbClient = await getDbClient();
   
-  const result = await dbClient.exec(
-    'INSERT INTO tasks (name) VALUES (?) RETURNING *',
-    [input.name]
-  );
+  const result = await dbClient({
+    type: 'exec',
+    args: {
+      sql: 'INSERT INTO tasks (name) VALUES (?) RETURNING *',
+      bind: [input.name]
+    }
+  });
   
   return result.resultRows[0] as Task;
 }
@@ -15,9 +18,12 @@ export async function addTask(input: CreateTaskInput): Promise<Task> {
 export async function getTasks(): Promise<Task[]> {
   const dbClient = await getDbClient();
   
-  const result = await dbClient.exec(
-    'SELECT * FROM tasks ORDER BY created_at DESC'
-  );
+  const result = await dbClient({
+    type: 'exec',
+    args: {
+      sql: 'SELECT * FROM tasks ORDER BY created_at DESC'
+    }
+  });
   
   return result.resultRows as Task[];
 }
@@ -25,10 +31,13 @@ export async function getTasks(): Promise<Task[]> {
 export async function getTask(id: number): Promise<Task | null> {
   const dbClient = await getDbClient();
   
-  const result = await dbClient.exec(
-    'SELECT * FROM tasks WHERE id = ?',
-    [id]
-  );
+  const result = await dbClient({
+    type: 'exec',
+    args: {
+      sql: 'SELECT * FROM tasks WHERE id = ?',
+      bind: [id]
+    }
+  });
   
   return result.resultRows[0] as Task || null;
 }
@@ -56,10 +65,13 @@ export async function updateTask(input: UpdateTaskInput): Promise<Task | null> {
   updates.push('updated_at = CURRENT_TIMESTAMP');
   params.push(input.id);
   
-  const result = await dbClient.exec(
-    `UPDATE tasks SET ${updates.join(', ')} WHERE id = ? RETURNING *`,
-    params
-  );
+  const result = await dbClient({
+    type: 'exec',
+    args: {
+      sql: `UPDATE tasks SET ${updates.join(', ')} WHERE id = ? RETURNING *`,
+      bind: params
+    }
+  });
   
   return result.resultRows[0] as Task || null;
 }
@@ -67,10 +79,13 @@ export async function updateTask(input: UpdateTaskInput): Promise<Task | null> {
 export async function deleteTask(id: number): Promise<boolean> {
   const dbClient = await getDbClient();
   
-  const result = await dbClient.exec(
-    'DELETE FROM tasks WHERE id = ?',
-    [id]
-  );
+  const result = await dbClient({
+    type: 'exec',
+    args: {
+      sql: 'DELETE FROM tasks WHERE id = ?',
+      bind: [id]
+    }
+  });
   
   return result.changes > 0;
 }
@@ -90,9 +105,12 @@ export async function toggleTask(id: number): Promise<Task | null> {
 export async function getTaskCount(): Promise<number> {
   const dbClient = await getDbClient();
   
-  const result = await dbClient.exec(
-    'SELECT COUNT(*) as count FROM tasks'
-  );
+  const result = await dbClient({
+    type: 'exec',
+    args: {
+      sql: 'SELECT COUNT(*) as count FROM tasks'
+    }
+  });
   
   return result.resultRows[0].count;
 }

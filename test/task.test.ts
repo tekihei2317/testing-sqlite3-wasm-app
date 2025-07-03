@@ -6,7 +6,12 @@ describe('Task Management', () => {
   beforeEach(async () => {
     // Clean up tasks table before each test
     const dbClient = await getDbClient();
-    await dbClient.exec('DELETE FROM tasks');
+    await dbClient({
+      type: 'exec',
+      args: {
+        sql: 'DELETE FROM tasks'
+      }
+    });
   });
 
   describe('addTask', () => {

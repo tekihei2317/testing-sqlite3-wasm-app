@@ -36,14 +36,22 @@ Core task management functionality:
 - Real database connections used in tests
 - Example test pattern focuses on verifying actual database state changes
 
+## Development Commands
+
+Common commands for development:
+- `npm test` - Run tests in watch mode
+- `npm run test:run` - Run tests once
+- `npm run dev` - Run tests in watch mode (alias for test)
+- `npm run build` - Build TypeScript to JavaScript
+- `npm run typecheck` - Run TypeScript type checking without emitting files
+
 ## Development Setup
 
-Currently no package.json or build configuration files exist. The project structure needs to be initialized with:
-
-- Node.js/npm configuration
-- Vitest testing framework
-- SQLite WASM dependencies
-- TypeScript configuration (if using TypeScript)
+Project is initialized with:
+- Node.js/npm configuration with package.json
+- Vitest testing framework with jsdom environment
+- SQLite WASM dependencies (@sqlite.org/sqlite-wasm)
+- TypeScript configuration with strict mode enabled
 
 ## Important Notes
 

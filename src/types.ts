@@ -2,21 +2,25 @@
 // Based on sqlite-wasm GitHub issue #53
 
 export interface SQLiteWorkerAPI {
-  exec(sql: string, params?: any[]): Promise<any>;
-  export(): Promise<Uint8Array>;
-  close(): Promise<void>;
+  (message: SQLiteWorkerMessage): Promise<any>;
+  exec?: (sql: string, params?: any[]) => Promise<any>;
+  export?: () => Promise<Uint8Array>;
+  close?: () => Promise<void>;
 }
 
 export interface SQLiteWorkerMessage {
   type: string;
-  messageId: string;
+  messageId?: string;
   dbId?: string;
-  sql?: string;
-  bind?: any[];
-  saveSql?: string[];
-  returnValue?: any;
-  result?: any;
-  error?: any;
+  args?: {
+    filename?: string;
+    sql?: string;
+    bind?: any[];
+    saveSql?: string[];
+    returnValue?: any;
+    result?: any;
+    error?: any;
+  };
 }
 
 export interface SQLiteWorkerConfig {
