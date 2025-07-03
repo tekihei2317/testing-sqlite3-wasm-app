@@ -28,3 +28,9 @@ if (process.env.NODE_ENV === "test" || typeof window === "undefined") {
 [Missing typing for sqlite3Worker1Promiser · Issue #53 · sqlite/sqlite-wasm](https://github.com/sqlite/sqlite-wasm/issues/53)
 
 まだ完全な型は書かれていませんが、現在のPull Requestの差分を取り込めば良さそうな気はします。
+
+## メモ
+
+### sqlite3Worker1Promiserについて
+
+クエリを実行した後に、結果セットを取得する方法がない...？コールバックが1行ずつに実行できるっぽいですね。

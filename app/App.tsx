@@ -15,7 +15,6 @@ function App() {
     createTask,
     updateTaskStatus,
     removeTask,
-    editTask,
     refresh,
   } = useTasks();
 
@@ -53,7 +52,6 @@ function App() {
             tasks={tasks}
             onToggle={updateTaskStatus}
             onDelete={removeTask}
-            onEdit={editTask}
             totalCount={totalCount}
             completedCount={completedCount}
           />

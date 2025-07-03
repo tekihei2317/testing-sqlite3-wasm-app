@@ -6,7 +6,6 @@ interface TaskListProps {
   tasks: Task[];
   onToggle: (id: number) => Promise<void>;
   onDelete: (id: number) => Promise<void>;
-  onEdit: (id: number, name: string) => Promise<void>;
   totalCount: number;
   completedCount: number;
 }
@@ -15,7 +14,6 @@ export function TaskList({
   tasks,
   onToggle,
   onDelete,
-  onEdit,
   totalCount,
   completedCount,
 }: TaskListProps) {
@@ -48,7 +46,6 @@ export function TaskList({
           task={task}
           onToggle={onToggle}
           onDelete={onDelete}
-          onEdit={onEdit}
         />
       ))}
     </div>

@@ -6,8 +6,6 @@ export * from "./types";
 export {
   addTask,
   getTasks,
-  getTask,
-  updateTask,
   deleteTask,
   toggleTask,
   getTaskCount,

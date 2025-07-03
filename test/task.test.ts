@@ -2,8 +2,6 @@ import { describe, test, expect, beforeEach } from "vitest";
 import {
   addTask,
   getTasks,
-  getTask,
-  updateTask,
   deleteTask,
   toggleTask,
   getTaskCount,
@@ -61,48 +59,6 @@ describe("Task Management", () => {
     });
   });
 
-  describe("getTask", () => {
-    test("should return specific task by id", async () => {
-      const createdTask = await addTask({ name: "Specific Task" });
-      const retrievedTask = await getTask(createdTask.id);
-
-      expect(retrievedTask).toBeDefined();
-      expect(retrievedTask?.name).toBe("Specific Task");
-      expect(retrievedTask?.id).toBe(createdTask.id);
-    });
-
-    test("should return null for non-existent task", async () => {
-      const task = await getTask(999);
-      expect(task).toBeNull();
-    });
-  });
-
-  describe("updateTask", () => {
-    test("should update task name", async () => {
-      const task = await addTask({ name: "Original Name" });
-      const updatedTask = await updateTask({
-        id: task.id,
-        name: "Updated Name",
-      });
-
-      expect(updatedTask?.name).toBe("Updated Name");
-      expect(updatedTask?.id).toBe(task.id);
-    });
-
-    test("should update task completion status", async () => {
-      const task = await addTask({ name: "Task to Complete" });
-      const updatedTask = await updateTask({ id: task.id, completed: true });
-
-      expect(updatedTask?.completed).toBe(true);
-      expect(updatedTask?.id).toBe(task.id);
-    });
-
-    test("should return null for non-existent task", async () => {
-      const updatedTask = await updateTask({ id: 999, name: "New Name" });
-      expect(updatedTask).toBeNull();
-    });
-  });
-
   describe("deleteTask", () => {
     test("should delete existing task", async () => {
       const task = await addTask({ name: "Task to Delete" });
@@ -110,8 +66,8 @@ describe("Task Management", () => {
 
       expect(deleted).toBe(true);
 
-      const retrievedTask = await getTask(task.id);
-      expect(retrievedTask).toBeNull();
+      const tasks = await getTasks();
+      expect(tasks.find(t => t.id === task.id)).toBeUndefined();
     });
 
     test("should return false for non-existent task", async () => {

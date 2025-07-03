@@ -3,7 +3,6 @@ import { Task } from "../../src/types";
 import {
   addTask,
   getTasks,
-  updateTask,
   deleteTask,
   toggleTask,
   getTaskCount,
@@ -39,7 +38,7 @@ export function useTasks() {
         setError(err instanceof Error ? err.message : "Failed to create task");
       }
     },
-    [loadTasks],
+    [loadTasks]
   );
 
   const updateTaskStatus = useCallback(
@@ -52,7 +51,7 @@ export function useTasks() {
         setError(err instanceof Error ? err.message : "Failed to update task");
       }
     },
-    [loadTasks],
+    [loadTasks]
   );
 
   const removeTask = useCallback(
@@ -65,21 +64,9 @@ export function useTasks() {
         setError(err instanceof Error ? err.message : "Failed to delete task");
       }
     },
-    [loadTasks],
+    [loadTasks]
   );
 
-  const editTask = useCallback(
-    async (id: number, name: string) => {
-      try {
-        setError(null);
-        await updateTask({ id, name });
-        await loadTasks();
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Failed to update task");
-      }
-    },
-    [loadTasks],
-  );
 
   useEffect(() => {
     loadTasks();
@@ -98,7 +85,6 @@ export function useTasks() {
     createTask,
     updateTaskStatus,
     removeTask,
-    editTask,
     refresh: loadTasks,
   };
 }

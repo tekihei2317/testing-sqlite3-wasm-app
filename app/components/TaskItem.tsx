@@ -5,12 +5,9 @@ interface TaskItemProps {
   task: Task;
   onToggle: (id: number) => Promise<void>;
   onDelete: (id: number) => Promise<void>;
-  onEdit: (id: number, name: string) => Promise<void>;
 }
 
-export function TaskItem({ task, onToggle, onDelete, onEdit }: TaskItemProps) {
-  const [isEditing, setIsEditing] = useState(false);
-  const [editName, setEditName] = useState(task.name);
+export function TaskItem({ task, onToggle, onDelete }: TaskItemProps) {
   const [isUpdating, setIsUpdating] = useState(false);
 
   const handleToggle = async () => {
@@ -18,24 +15,6 @@ export function TaskItem({ task, onToggle, onDelete, onEdit }: TaskItemProps) {
     setIsUpdating(true);
     try {
       await onToggle(task.id);
-    } finally {
-      setIsUpdating(false);
-    }
-  };
-
-  const handleEdit = async () => {
-    if (!editName.trim() || editName === task.name) {
-      setIsEditing(false);
-      setEditName(task.name);
-      return;
-    }
-
-    setIsUpdating(true);
-    try {
-      await onEdit(task.id, editName.trim());
-      setIsEditing(false);
-    } catch (error) {
-      console.error("Failed to edit task:", error);
     } finally {
       setIsUpdating(false);
     }
@@ -53,15 +32,6 @@ export function TaskItem({ task, onToggle, onDelete, onEdit }: TaskItemProps) {
     }
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
-      handleEdit();
-    } else if (e.key === "Escape") {
-      setIsEditing(false);
-      setEditName(task.name);
-    }
-  };
-
   const createdAt = new Date(task.created_at).toLocaleDateString();
 
   return (
@@ -75,35 +45,18 @@ export function TaskItem({ task, onToggle, onDelete, onEdit }: TaskItemProps) {
       />
 
       <div className="task-content">
-        {isEditing ? (
-          <input
-            type="text"
-            value={editName}
-            onChange={(e) => setEditName(e.target.value)}
-            onBlur={handleEdit}
-            onKeyDown={handleKeyPress}
-            autoFocus
-            disabled={isUpdating}
-          />
-        ) : (
-          <>
-            <div
-              className={`task-name ${task.completed ? "completed" : ""}`}
-              onDoubleClick={() => !task.completed && setIsEditing(true)}
-            >
-              {task.name}
-            </div>
-            <div className="task-meta">
-              Created: {createdAt}
-              {task.updated_at !== task.created_at && (
-                <>
-                  {" "}
-                  • Updated: {new Date(task.updated_at).toLocaleDateString()}
-                </>
-              )}
-            </div>
-          </>
-        )}
+        <div className={`task-name ${task.completed ? "completed" : ""}`}>
+          {task.name}
+        </div>
+        <div className="task-meta">
+          Created: {createdAt}
+          {task.updated_at !== task.created_at && (
+            <>
+              {" "}
+              • Updated: {new Date(task.updated_at).toLocaleDateString()}
+            </>
+          )}
+        </div>
       </div>
 
       <button

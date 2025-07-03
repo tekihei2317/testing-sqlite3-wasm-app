@@ -18,6 +18,7 @@ export interface SQLiteWorkerMessage {
     bind?: any[];
     saveSql?: string[];
     returnValue?: any;
+    rowMode?: string;
     result?: any;
     error?: any;
   };
@@ -52,10 +53,4 @@ export interface Task {
 
 export interface CreateTaskInput {
   name: string;
-}
-
-export interface UpdateTaskInput {
-  id: number;
-  name?: string;
-  completed?: boolean;
 }
