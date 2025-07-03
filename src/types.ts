@@ -36,6 +36,12 @@ declare global {
   ): Promise<SQLiteWorkerAPI>;
 }
 
+declare module "@sqlite.org/sqlite-wasm" {
+  function sqlite3Worker1Promiser(
+    config?: SQLiteWorkerConfig,
+  ): Promise<SQLiteWorkerAPI>;
+}
+
 export interface Task {
   id: number;
   name: string;

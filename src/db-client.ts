@@ -8,8 +8,8 @@ export async function initializeDatabase(): Promise<SQLiteWorkerAPI> {
     return dbClient;
   }
 
-  // Use mock implementation for testing environment
-  if (process.env.NODE_ENV === "test" || typeof window === "undefined") {
+  // Use mock implementation only for test environment
+  if (process.env.NODE_ENV === "test") {
     dbClient = createMockSQLiteWorkerAPI();
   } else {
     // Initialize sqlite3Worker1Promiser for browser environment

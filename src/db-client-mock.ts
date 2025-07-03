@@ -1,7 +1,7 @@
 import { SQLiteWorkerAPI, SQLiteWorkerMessage } from "./types";
 
 // Mock implementation for testing
-export class MockSQLiteWorkerAPI implements SQLiteWorkerAPI {
+export class MockSQLiteWorkerAPI {
   private tables: Map<string, any[]> = new Map();
   private nextId = 1;
 
