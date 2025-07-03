@@ -35,7 +35,7 @@ export async function initializeDatabase(): Promise<SQLiteWorkerAPI> {
   await dbClient({
     type: "open",
     args: {
-      filename: "test.db",
+      filename: "file:test.db?vfs=opfs",
     },
   });
 
