@@ -1,0 +1,28 @@
+{
+  "name": "testing-sqlite3-wasm-app",
+  "version": "1.0.0",
+  "description": "## プロジェクトの目的",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tekihei2317/testing-sqlite3-wasm-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tekihei2317/testing-sqlite3-wasm-app/issues"
+  },
+  "homepage": "https://github.com/tekihei2317/testing-sqlite3-wasm-app#readme",
+  "devDependencies": {
+    "@types/node": "^24.0.10",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4"
+  },
+  "dependencies": {
+    "@sqlite.org/sqlite-wasm": "^3.50.1-build1"
+  }
+}
