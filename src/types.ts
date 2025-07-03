@@ -31,7 +31,9 @@ export interface SQLiteWorkerConfig {
 }
 
 declare global {
-  function sqlite3Worker1Promiser(config?: SQLiteWorkerConfig): Promise<SQLiteWorkerAPI>;
+  function sqlite3Worker1Promiser(
+    config?: SQLiteWorkerConfig,
+  ): Promise<SQLiteWorkerAPI>;
 }
 
 export interface Task {

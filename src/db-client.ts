@@ -1,5 +1,5 @@
-import { SQLiteWorkerAPI } from './types';
-import { createMockSQLiteWorkerAPI } from './db-client-mock';
+import { SQLiteWorkerAPI } from "./types";
+import { createMockSQLiteWorkerAPI } from "./db-client-mock";
 
 let dbClient: SQLiteWorkerAPI | null = null;
 
@@ -9,22 +9,22 @@ export async function initializeDatabase(): Promise<SQLiteWorkerAPI> {
   }
 
   // Use mock implementation for testing environment
-  if (process.env.NODE_ENV === 'test' || typeof window === 'undefined') {
+  if (process.env.NODE_ENV === "test" || typeof window === "undefined") {
     dbClient = createMockSQLiteWorkerAPI();
   } else {
     // Initialize sqlite3Worker1Promiser for browser environment
-    const { sqlite3Worker1Promiser } = await import('@sqlite.org/sqlite-wasm');
-    
+    const { sqlite3Worker1Promiser } = await import("@sqlite.org/sqlite-wasm");
+
     // Create database client using wrapped worker pattern
     const promiser = await new Promise<SQLiteWorkerAPI>((resolve) => {
       const _promiser = sqlite3Worker1Promiser({
         onready: () => {
-          console.log('SQLite database initialized successfully');
+          console.log("SQLite database initialized successfully");
           resolve(_promiser);
         },
         onerror: (error: any) => {
-          console.error('SQLite initialization error:', error);
-        }
+          console.error("SQLite initialization error:", error);
+        },
       });
     });
 
@@ -33,15 +33,15 @@ export async function initializeDatabase(): Promise<SQLiteWorkerAPI> {
 
   // Open database
   await dbClient({
-    type: 'open',
-    args: { 
-      filename: 'test.db'
-    }
+    type: "open",
+    args: {
+      filename: "test.db",
+    },
   });
 
   // Create tasks table
   await dbClient({
-    type: 'exec',
+    type: "exec",
     args: {
       sql: `
         CREATE TABLE IF NOT EXISTS tasks (
@@ -51,8 +51,8 @@ export async function initializeDatabase(): Promise<SQLiteWorkerAPI> {
           created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
           updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )
-      `
-    }
+      `,
+    },
   });
 
   return dbClient;
@@ -68,7 +68,7 @@ export async function getDbClient(): Promise<SQLiteWorkerAPI> {
 export async function closeDatabase(): Promise<void> {
   if (dbClient) {
     await dbClient({
-      type: 'close'
+      type: "close",
     });
     dbClient = null;
   }
